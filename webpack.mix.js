@@ -11,5 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
+//配置忽略node_modules文件夹
+// if(Mix.isWatching()){
+//     mix.webpackConfig({
+//         watchOptions:{
+//             ignored : /node_modules/,
+//             //poll : 1000
+//         },
+//     })
+// }
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/css').version();
