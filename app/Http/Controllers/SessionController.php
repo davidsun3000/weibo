@@ -29,4 +29,10 @@ class SessionController extends Controller
         }
         return;
     }
+
+    public function destroy() {
+        Auth::logout();
+        session()->flash('sucess', '您已经成功退出系统');
+        return redirect('login');
+    }
 }
