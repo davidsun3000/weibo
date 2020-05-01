@@ -124,6 +124,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    // DS: Log 
+    'log' => 'signle',
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

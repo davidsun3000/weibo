@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
 use Mail;
+use Log;
 
 class UsersController extends Controller
 {
@@ -49,9 +50,14 @@ class UsersController extends Controller
         $view = 'emails.confirm';
         $data = compact('user');
         #$from = 'david@weibo.com';
+        $from = env('MAIL_USERNAME', '');
         $name = 'david';
         $to = $user->email;
         $subject = "感谢注册 Weibo 应用！请确认你的邮箱.";
+
+        Log::debug('DS: check email smtp');
+        Log::debug($from);
+        Log::debug($to);
         
         Mail::send($view, $data, function ($message)  use ($from, $name, $to, $subject) {
             $message->from($from, $name)->to($to)->subject($subject);
@@ -76,6 +82,7 @@ class UsersController extends Controller
         $user->save();
 
         Auth::login($user);
+        Log::info('用户登录成功:', $user->email);
         session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show', [$user]);
     }
