@@ -38,6 +38,7 @@ class UsersController extends Controller
         ]);
 
         // send confirm email
+        Log::debug('Debug:', ['store function']);
         $this->sendEmailConfirmationTo($user);
 
         // Auth::login($user);
@@ -49,18 +50,19 @@ class UsersController extends Controller
     protected function sendEmailConfirmationTo($user) {
         $view = 'emails.confirm';
         $data = compact('user');
-        #$from = 'david@weibo.com';
-        $from = env('MAIL_USERNAME', '');
-        $name = 'david';
+        // $from = 'david@weibo.com';
+        // $from = env('MAIL_USERNAME', '');
+        // $name = 'david';
         $to = $user->email;
         $subject = "感谢注册 Weibo 应用！请确认你的邮箱.";
 
-        Log::debug('DS: check email smtp');
-        Log::debug($from);
-        Log::debug($to);
+        Log::info('Send confirmation email: ');
+        // Log::info('From: ', [$from]);
+        Log::info('To: ', [$to]);
         
-        Mail::send($view, $data, function ($message)  use ($from, $name, $to, $subject) {
-            $message->from($from, $name)->to($to)->subject($subject);
+        Mail::send($view, $data, function ($message)  use ($to, $subject) {
+            Log::debug('Debug:', ['sendEmailConfirmationTo']);
+            $message->to($to)->subject($subject);
 
             // $message->from('john@johndoe.com', 'John Doe');
             // $message->sender('john@johndoe.com', 'John Doe');
@@ -82,7 +84,7 @@ class UsersController extends Controller
         $user->save();
 
         Auth::login($user);
-        Log::info('用户登录成功:', $user->email);
+        Log::info('用户登录成功:', [$user->email]);
         session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show', [$user]);
     }
