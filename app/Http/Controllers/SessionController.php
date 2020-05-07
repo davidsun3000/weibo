@@ -9,6 +9,13 @@ use Log;
 class SessionController extends Controller
 {
     // DS
+
+    public function __construct() {
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
+    
     public function create() {
         return view('sessions.create');
     }
